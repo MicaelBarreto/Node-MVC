@@ -1,21 +1,30 @@
-// From https://www.sitepoint.com/node-js-mvc-application/
-require('dotenv').config({silent: true});
+//just cp -r config-example config.js
 
-module.exports = {
-  port: process.env.PORT || 3000,
-  env: process.env.ENV || 'development',
+const env = process.env.NODE_ENV || 'dev'
 
-  // Environment-dependent settings
-  development: {
-    db: {
-      dialect: 'sqlite',
-      storage: ':memory:'
+const config = () => {
+    switch (env) {
+        case 'dev':
+            return{
+                db: 'mongodb+srv://<USER>:<PASSWORD>@cluster0-imlcg.mongodb.net/test?retryWrites=true&w=majority',
+                jwt: '<JWT-HASH>',
+                expiration: '7d' // expiration time of jwt
+            }
+        case 'hml':
+            return{
+                db: 'mongodb+srv://<USER>:<PASSWORD>@cluster0-imlcg.mongodb.net/test?retryWrites=true&w=majority',
+                jwt: '<JWT-HASH>',
+                expiration: '7d'
+            }
+        case 'prod':
+            return{
+                db: 'mongodb+srv://<USER>:<PASSWORD>@cluster0-imlcg.mongodb.net/test?retryWrites=true&w=majority',
+                jwt: '<JWT-HASH>',
+                expiration: '7d'
+            }
     }
-  },
-  production: {
-    db: {
-      dialect: 'sqlite',
-      storage: 'db/database.sqlite'
-    }
-  }
-};
+}
+
+console.log(`Starting API on ${env.toUpperCase()}`)
+
+module.exports = config()
