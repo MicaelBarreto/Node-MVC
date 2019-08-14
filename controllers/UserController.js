@@ -31,8 +31,9 @@ class UserController{
     }
     
     static async show(req, res, next){
-        var user = Users.findOne({ req }).select('+password')
-        console.log(req.query)
+        var user = await Users.findOne({ email: req.params.email })
+            .select('+password')
+            .exec()
         return res.render('../views/users/show', { message: '', user, title: 'Show', content: 'MVC' })
     }
 }
